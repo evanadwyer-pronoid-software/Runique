@@ -5,7 +5,7 @@ import com.plcoding.core.domain.AuthInfo
 import com.plcoding.core.domain.SessionStorage
 import com.plcoding.core.domain.util.Result
 import io.ktor.client.HttpClient
-import io.ktor.client.engine.cio.CIO
+import io.ktor.client.engine.HttpClientEngine
 import io.ktor.client.plugins.auth.Auth
 import io.ktor.client.plugins.auth.providers.BearerTokens
 import io.ktor.client.plugins.auth.providers.bearer
@@ -25,8 +25,10 @@ class HttpClientFactory(
     private val sessionStorage: SessionStorage
 ) {
 
-    fun build(): HttpClient {
-        return HttpClient(CIO) {
+    fun build(
+        engine: HttpClientEngine
+    ): HttpClient {
+        return HttpClient(engine) {
             install(ContentNegotiation) {
                 json(
                     json = Json {
